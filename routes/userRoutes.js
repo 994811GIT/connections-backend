@@ -42,53 +42,63 @@ router.post('/login', async (req, res) => {
         }
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY)
         console.log(user)
-        return res.status(200).send({ message: " in succesfulyLogged",userData : user, token: token, userId: user._id })
+        return res.status(200).send({ message: " in succesfulyLogged", userData: user, token: token, userId: user._id })
     } catch (e) {
         res.status(404).send({ error: e, message: "Cannot login" })
     }
 })
 
-router.patch('/user/:id', async(req,res)=>{
+router.patch('/user/:id', async (req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, { ...req.body}, { new: true })
+        const user = await User.findByIdAndUpdate(req.params.id, { ...req.body }, { new: true })
         res.status(200).send(user)
     } catch (e) {
         res.status(404).send({ error: e })
     }
 })
-router.post('/user/unfollow/:id', async(req,res)=>{
-    try{
-        const user = await User.findOne({ _id : req.params.id })
-        if( user.followers){
-        const followers = user.followers.filter( item => item != req.body.followers)
-        user.followers = followers
-        user.save()
+router.post('/user/unfollow/:id', async (req, res) => {
+    try {
+        const user = await User.findOne({ _id: req.params.id })
+        if (user.followers) {
+            const followers = user.followers.filter(item => item != req.body.currentUser)
+            user.followers = followers
+            user.save()
+        }
+        const loggedUser = await User.findOne({ _id: req.body.currentUser })
+        if (loggedUser.following) {
+            const following = loggedUser.following.filter(item => item != req.params.id)
+            loggedUser.following = following
+            loggedUser.save()
         }
         res.status(200).send(user)
-    }catch(e){
+    } catch (e) {
         console.log(e)
     }
 })
 
-router.post('/user/:id', async(req,res)=>{
+router.post('/user/:id', async (req, res) => {
     try {
-        const user = await User.findOne({_id : req.params.id})
-        if(user.followers){
-            user.followers.push(req.body.followers)
+        const user = await User.findOne({ _id: req.params.id })
+        const loggedUser = await User.findOne({ _id: req.body.currentUser })
+        if (user.followers) {
+            user.followers.push(req.body.currentUser)
             user.save()
-        }else{
-            const user  = await User.followers( { followers : [req.body.followers]})
+        } else {
+            const user = await User.followers({ followers: [req.body.currentUser] })
             user.save()
         }
+        loggedUser.following.push(req.params.id)
+        loggedUser.save()
+
         res.status(200).send(user)
     } catch (e) {
-        res.status(404).send({ message : "error occuring", error: e })
+        res.status(404).send({ message: "error occuring", error: e })
     }
 })
 
-router.get('/user/:id', async(req,res)=>{
+router.get('/user/:id', async (req, res) => {
     try {
-        const user = await User.findById({_id : req.params.id})
+        const user = await User.findById({ _id: req.params.id })
         res.status(200).send(user)
     } catch (e) {
         res.status(404).send({ error: e })

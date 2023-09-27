@@ -10,3 +10,6 @@ yarn-error.log*
 # local env files
 .env* 
 .local
+
+#folders
+/public
