@@ -18,6 +18,12 @@ const router = express.Router()
 //         }
 //     }
 // )
+// const upload = multer({storage : storage})
+
+// router.post('/upload',upload.single("file"),(req,res)=>{
+//     const imgUrl = `http://localhost:3000/uploads/${req.file.filename}`
+//     res.status(200).send({url : imgUrl})
+// })
 
 const storage = multer.memoryStorage();
 
@@ -34,12 +40,6 @@ const fileFilter = (req, file, cb) => {
     fileFilter,
     limits: { fileSize: 1000000000, files: 2 },
   });
-
-// router.post('/upload',upload.single("file"),(req,res)=>{
-//     const imgUrl = `http://localhost:3000/uploads/${req.file.filename}`
-//     res.status(200).send({url : imgUrl})
-// })
-
 router.post("/upload", upload.array("file"), async (req, res) => {
     try {
       const results = await s3Uploadv3(req.files);
@@ -70,7 +70,4 @@ router.post("/upload", upload.array("file"), async (req, res) => {
       }
     }
   });
-  
-  
-
 module.exports = router
