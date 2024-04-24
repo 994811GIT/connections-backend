@@ -29,6 +29,6 @@ services:
         condition: on-failure
 networks:
   network-frontend:
-    driver: bridge
+    driver: overlay
   network-backend:
-    driver: bridge
+    driver: overlay
