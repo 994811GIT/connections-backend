@@ -16,8 +16,6 @@ services:
         condition: on-failure
   backend:
     image: venkynagidi/image1:latest
-    ports:
-      - "8081:80"
     networks:
       - "network-backend"
     deploy:
