@@ -1,0 +1,35 @@
+---
+version: '3'
+services:
+  frontend:
+    image: venkynagidi/image2:latest
+    ports:
+      - "8085:80"
+    networks:
+      - "network-frontend"
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+  backend:
+    image: venkynagidi/image1:latest
+    ports:
+      - "8089:80"
+    networks:
+      - "network-backend"
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+networks:
+  network-frontend:
+    driver: bridge
+networks:
+  network-backend:
+    driver: bridge
