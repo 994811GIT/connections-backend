@@ -5,7 +5,7 @@ services:
     image: venkynagidi/image2:latest
     ports:
       - "8085:80"
-    network:
+    networks:
       - "network-frontend"
     deploy:
       replicas: 2
@@ -18,7 +18,7 @@ services:
     image: venkynagidi/image1:latest
     ports:
       - "8089:80"
-    network:
+    networks:
       - "network-backend"
     deploy:
       replicas: 2
@@ -30,6 +30,5 @@ services:
 networks:
   network-frontend:
     driver: bridge
-networks:
   network-backend:
     driver: bridge
