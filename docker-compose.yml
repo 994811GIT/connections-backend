@@ -8,29 +8,18 @@ services:
     networks:
       - frontend-network
       - backend-network
-
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 2
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+  
   backend:
     image: venkynagidi/image1:latest
     ports:
-      - "8089:80"
+      - "3000:3000"
     networks:
-      - "network-backend"
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 2
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+      - backend-network
+      - frontend-network
+      
 networks:
-  network-frontend:
-    driver: overlay
-  network-backend:
-    driver: overlay
+  frontend-network:
+    driver: bridge
+  backend-network:
+    driver: bridge
+
