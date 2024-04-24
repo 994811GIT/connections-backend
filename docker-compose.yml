@@ -2,7 +2,7 @@
 version: '3'
 services:
   frontend:
-    image:venkynagidi/image2:latest
+    image: venkynagidi/image2:latest
     ports:
       - "8085:80"
     networks:
