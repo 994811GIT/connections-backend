@@ -17,7 +17,7 @@ services:
   backend:
     image: venkynagidi/image1:latest
     ports:
-      - "8089:80"
+      - "80:80"
     networks:
       - "network-backend"
     deploy:
