@@ -4,10 +4,12 @@ services:
   frontend:
     image: venkynagidi/image2:latest
     ports:
-      - "8085:80"
+      - "8089:80"
     networks:
       - frontend-network
       - backend-network
+    deploy:
+      replicas: 2
   
   backend:
     image: venkynagidi/image1:latest
@@ -16,6 +18,8 @@ services:
     networks:
       - backend-network
       - frontend-network
+    deploy:
+      replicas: 2
       
 networks:
   frontend-network:
