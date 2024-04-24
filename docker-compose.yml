@@ -2,11 +2,13 @@
 version: '3'
 services:
   frontend:
-    image: venkynagidi/image2:latest
+    image: frontend-image
     ports:
       - "8085:80"
     networks:
-      - "network-frontend"
+      - frontend-network
+      - backend-network
+
     deploy:
       replicas: 2
       update_config:
